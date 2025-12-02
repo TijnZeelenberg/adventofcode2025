@@ -3,6 +3,8 @@ import math
 
 file = "day2_input.txt"
 ID_array = np.genfromtxt(file, dtype=str, delimiter=",")
+
+#### PART ONE ####
 answer1 = 0
 
 for IDrange in ID_array:
@@ -44,6 +46,7 @@ for IDrange in ID_array:
 
         # Problem: a string like 333333 can be interpreted as 2 * '333', 2 * '33', and 6 *'3'
         # This results in this one wrong ID being counted 3 times for the answer
+        # Solution: make sure each ID is only counted once in the answer
 
         if len(ID_str) == 1:  # Single digit ID's cannot have repeating patterns
             print("Skipping single digit ID ", ID)
