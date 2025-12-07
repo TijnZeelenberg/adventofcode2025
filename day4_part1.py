@@ -3,6 +3,8 @@ import numpy as np
 file = "day4_input.txt"
 text = np.loadtxt(file, dtype=str)
 
+# TODO: Solve this using a convolution kernel of 3x3 over the input as a boolean matrix with 1 layer of zeropadding
+
 # Put characters into 2D np.array
 char_lists = [[char for char in line] for line in text]
 char_array = np.array(char_lists)
