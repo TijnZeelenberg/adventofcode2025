@@ -1,5 +1,4 @@
 import numpy as np
-import numpy.ma as ma
 
 file = "day4_input.txt"
 text = np.loadtxt(file, dtype=str)
