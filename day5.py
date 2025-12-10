@@ -36,23 +36,19 @@ def cleanranges(ranges):
             print(f"Range {rangeList} is interesting...")
         uniqueRange = True
         # print("Considering the range ", rangeList)
-        for cleanedRangeList in cleanedRanges:
-            if (
-                (rangeList[0] >= cleanedRangeList[0])
-                and (rangeList[0] <= cleanedRangeList[1])
-                and (rangeList[1] > cleanedRangeList[1])
+        for i, cleanedRangeList in enumerate(cleanedRanges):
+            if (cleanedRangeList[0] <= rangeList[0] <= cleanedRangeList[1]) and (
+                rangeList[1] > cleanedRangeList[1]
             ):
                 # print(f"{rangeList} overlaps with {cleanedRangeList}")
-                cleanedRangeList[1] = rangeList[1]
+                cleanedRanges[i][1] = rangeList[1]
                 uniqueRange = False
                 break
-            elif (
-                (rangeList[1] >= cleanedRangeList[0])
-                and (rangeList[1] <= cleanedRangeList[1])
-                and (rangeList[0] < cleanedRangeList[0])
+            elif (cleanedRangeList[0] <= rangeList[1] <= cleanedRangeList[1]) and (
+                rangeList[0] < cleanedRangeList[0]
             ):
                 # print(f"{rangeList} overlaps with {cleanedRangeList}")
-                cleanedRangeList[0] = rangeList[0]
+                cleanedRanges[i][0] = rangeList[0]
                 uniqueRange = False
                 break
             elif (rangeList[0] >= cleanedRangeList[0]) and (
@@ -66,7 +62,7 @@ def cleanranges(ranges):
             ):
                 # print(f"{rangeList} is a superset of {cleanedRangeList}")
                 uniqueRange = False
-                cleanedRangeList = rangeList
+                cleanedRanges[i] = rangeList
                 break
             else:
                 # print(f"Range {rangeList} not overlapping with {cleanedRangeList}")
@@ -84,11 +80,8 @@ for i in range(3):
     print(len(freshRanges))
     freshRanges = cleanranges(freshRanges)
 
-print(freshRanges)
-
 countID = 0
-for rangeList in freshRanges:
-    if rangeList[0] >= rangeList[1]:
-        print(f"Range {rangeList} is interesting...")
+for rangeList in sorted(freshRanges):
+    print(rangeList)
     countID += (rangeList[1] - rangeList[0]) + 1
 print("Answer to part TWO = ", countID)
