@@ -10,9 +10,7 @@ freshRanges = [
 ]
 produceIDs = [int(ID) for ID in rangeIDSplit[1].split("\n")[:-1]]
 
-print("freshRanges = ", freshRanges)
-print("\n\n\n ProduceIDs = ", produceIDs)
-
+### PART ONE ###
 fresh = False
 freshIDs = []
 for ID in produceIDs:
@@ -24,5 +22,73 @@ for ID in produceIDs:
         freshIDs.append(ID)
     fresh = False
 
-print(freshIDs)
 print("Part one answer = ", len(freshIDs))
+
+### PART TWO ###
+print("\n\n ### PART TWO ###")
+
+
+def cleanranges(ranges):
+    # print("freshRanges = ", ranges)
+    cleanedRanges = [ranges[0]]
+    for rangeList in ranges:
+        if rangeList[0] > rangeList[1]:
+            print(f"Range {rangeList} is interesting...")
+        uniqueRange = True
+        # print("Considering the range ", rangeList)
+        for cleanedRangeList in cleanedRanges:
+            if (
+                (rangeList[0] >= cleanedRangeList[0])
+                and (rangeList[0] <= cleanedRangeList[1])
+                and (rangeList[1] > cleanedRangeList[1])
+            ):
+                # print(f"{rangeList} overlaps with {cleanedRangeList}")
+                cleanedRangeList[1] = rangeList[1]
+                uniqueRange = False
+                break
+            elif (
+                (rangeList[1] >= cleanedRangeList[0])
+                and (rangeList[1] <= cleanedRangeList[1])
+                and (rangeList[0] < cleanedRangeList[0])
+            ):
+                # print(f"{rangeList} overlaps with {cleanedRangeList}")
+                cleanedRangeList[0] = rangeList[0]
+                uniqueRange = False
+                break
+            elif (rangeList[0] >= cleanedRangeList[0]) and (
+                rangeList[1] <= cleanedRangeList[1]
+            ):
+                # print(f"{rangeList} is a subset of {cleanedRangeList}")
+                uniqueRange = False
+                break
+            elif (rangeList[0] < cleanedRangeList[0]) and (
+                rangeList[1] > cleanedRangeList[1]
+            ):
+                # print(f"{rangeList} is a superset of {cleanedRangeList}")
+                uniqueRange = False
+                cleanedRangeList = rangeList
+                break
+            else:
+                # print(f"Range {rangeList} not overlapping with {cleanedRangeList}")
+                uniqueRange = True
+
+        # If no overlap is found add the new rane to the cleanedRangeList
+        if uniqueRange == True:
+            cleanedRanges.append(rangeList)
+        #     print("no overlap found, appending to cleanedRanges")
+        # print("Current cleanedRanges = ", cleanedRanges)
+    return cleanedRanges
+
+
+for i in range(3):
+    print(len(freshRanges))
+    freshRanges = cleanranges(freshRanges)
+
+print(freshRanges)
+
+countID = 0
+for rangeList in freshRanges:
+    if rangeList[0] >= rangeList[1]:
+        print(f"Range {rangeList} is interesting...")
+    countID += (rangeList[1] - rangeList[0]) + 1
+print("Answer to part TWO = ", countID)
